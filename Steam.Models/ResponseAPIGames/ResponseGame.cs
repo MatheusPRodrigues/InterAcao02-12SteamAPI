@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Steam.Models.ResponseAPI
 {
-    public class Response
+    public class ResponseGame
     {
         [JsonPropertyName("total")]
         public int Total { get; set; }

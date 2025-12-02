@@ -24,6 +24,11 @@ namespace Steam.API.Repositories
             }
         }
 
+        public async Task<List<Game>> GetAllGamesInDBAsync()
+        {
+            return await _gameCollection.FindAsync(g => true).Result.ToListAsync();
+        }
+
         public async Task<Game> GetGameByIdAsync(int idGame)
         {
             return await _gameCollection.FindAsync(g => g.Id == idGame).Result.FirstOrDefaultAsync();

@@ -19,7 +19,7 @@ namespace Steam.API.Controllers
         }
 
         [HttpGet("{gameName}")]
-        public async Task<ActionResult<Response>> GetGamesAsync(string gameName)
+        public async Task<ActionResult<ResponseGame>> GetGamesAsync(string gameName)
         {
             try
             {
@@ -28,6 +28,24 @@ namespace Steam.API.Controllers
                     return NotFound($"{gameName} não pode ser encontrado!");
 
                 return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet("InDB")]
+        public async Task<ActionResult<List<Game>>> GetAllGamesInDBAsync()
+        {
+            try
+            {
+                var result = await _steamService.GetAllGamesInDBAsync();
+                if (result is null || result.Count() == 0)
+                    return NotFound("Não há jogos cadastrados no Banco! Busque externamente!");
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
