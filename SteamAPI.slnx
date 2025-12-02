@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Steam.Models/Steam.Models.csproj" />
+  <Project Path="SteamAPI/Steam.API.csproj" />
+</Solution>
