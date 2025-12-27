@@ -1,0 +1,36 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: steamapi_mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - steam_data_mongo:/data/db
+    networks:
+      - steam_network
+
+  steamapi:
+    image: matheusprodrigues/steamapi:v1
+    container_name: steamapi_web_v1
+    ports:  
+      - 8000:80
+      - 8001:443
+    environment:
+      - ASPNETCORE_URLS=https://+;http://+"
+      - ASPNETCORE_HTTPS_PORTS=8001
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=steam321
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/steam.pfx
+      - ConnectionStrings__MongoConnection=mongodb://mongodb:27017
+    volumes:
+      - ${USERPROFILE}/AppData/Roaming/ASP.NET/Https:/https/
+    depends_on:
+      - mongodb
+    networks:
+      - steam_network
+    
+volumes:
+  steam_data_mongo:
+
+networks:
+  steam_network:
+    driver: bridge
